@@ -11,7 +11,7 @@ from transformers import CLIPTokenizer, CLIPTextModel
 
 
 class ImageExtension():
-    DEFAULT_MODEL = "stabilityai/stable-diffusion-2-inpainting"
+    DEFAULT_MODEL = "sd2-community/stable-diffusion-2-inpainting"
     cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
 
     # cache_dir = "F:/huggingface_model/"  # diffusers的本地缓存路径
@@ -53,7 +53,7 @@ class ImageExtension():
 
         latent_model_input = self.ddim.scale_model_input(latent_model_input, timestep)
         latent_model_input = torch.cat([latent_model_input, mask_input, masked_latent_input],
-                                       dim=1)  # inpaint模型拥有额外的输入信息，通道数为9
+                                       dim=1)  # The inpaint model has additional input information and the number of channels is 9
 
         noise_pred = self.unet(latent_model_input, timestep, encoder_hidden_states=prompt_embeds).sample
         noise_pred_uncond, noise_pred_text = noise_pred.chunk(2)
@@ -79,7 +79,7 @@ class ImageExtension():
                 sample_masked_latent = masked_latent[:, :, chunk_block[0]:chunk_block[1], chunk_block[2]:chunk_block[3]]
 
                 pred_noise = self.sample_block(sample_latent, sample_masked_latent, sample_mask, prompt_embeds, Ti,
-                                               guidance_scale)  # 每一个时间步的采样过程
+                                               guidance_scale)  # Sampling process at each time step
 
                 full_latent[:, :, chunk_block[0]:chunk_block[1], chunk_block[2]:chunk_block[3]] += pred_noise
                 count[:, :, chunk_block[0]:chunk_block[1], chunk_block[2]:chunk_block[3]] += 1
