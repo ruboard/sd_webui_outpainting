@@ -9,12 +9,11 @@ from diffusers import DDIMScheduler
 from diffusers.image_processor import VaeImageProcessor
 from transformers import CLIPTokenizer, CLIPTextModel
 
-
 class ImageExtension():
     DEFAULT_MODEL = "sd2-community/stable-diffusion-2-inpainting"    
-    cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../models/diffusers")
-    # cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
-    # cache_dir = "F:/huggingface_model/"  # Local cache path for diffusers
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    target_path = os.path.join(script_dir, "../../../models/diffusers")
+    cache_dir = os.path.abspath(target_path)
 
     def __init__(self,
                  sampleTimeStep: int = 30,
