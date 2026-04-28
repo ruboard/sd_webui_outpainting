@@ -89,23 +89,23 @@ class Event():
 
             torchImg = torchImg.cuda().half()
             mask = np.zeros([torchImg.shape[2], torchImg.shape[3]], dtype=np.uint8)
-            mask[bbox[1][0][1]: bbox[1][0][3], bbox[1][0][0]: bbox[1][0][2]] = 1  # 需要扩展的地方设置为mask 1
-            mask[bbox[0][0][1]: bbox[0][0][3], bbox[0][0][0]: bbox[0][0][2]] = 0  # 重叠区域再次置零
+            mask[bbox[1][0][1]: bbox[1][0][3], bbox[1][0][0]: bbox[1][0][2]] = 1  # Where expansion is required, set it to mask 1
+            mask[bbox[0][0][1]: bbox[0][0][3], bbox[0][0][0]: bbox[0][0][2]] = 0  # The overlapping area is zeroed again
 
             mask = cv2.medianBlur(mask, 3)
             mask = mask[None, None, :, :]
             mask = torch.from_numpy(mask).cuda().half()
 
-            masked_img = torchImg * (mask < 0.5)  # 反向掩码
+            masked_img = torchImg * (mask < 0.5)  # reverse mask
             latent = self.img_ext.getImgLatent(torchImg)
             masked_latent = self.img_ext.getImgLatent(masked_img)
 
             mask = torch.nn.functional.interpolate(
-                mask, size=(mask.shape[2] // 8, mask.shape[3] // 8)  # mask 转换为latent尺寸
+                mask, size=(mask.shape[2] // 8, mask.shape[3] // 8)  # mask converted to latent size
             )
 
             noise = torch.randn_like(latent)
-            extend_latent = self.img_ext.addNoise(latent, noise, self.img_ext.allTimestep[0])  # 加噪
+            extend_latent = self.img_ext.addNoise(latent, noise, self.img_ext.allTimestep[0])  # Noise
 
             chunkList = [
                 [bbox[0][0][1] // 8, bbox[0][0][3] // 8, bbox[0][0][0] // 8, bbox[0][0][2] // 8],
