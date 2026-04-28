@@ -11,9 +11,9 @@ from transformers import CLIPTokenizer, CLIPTextModel
 
 
 class ImageExtension():
-    DEFAULT_MODEL = "sd2-community/stable-diffusion-2-inpainting"
-    cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
-
+    DEFAULT_MODEL = "sd2-community/stable-diffusion-2-inpainting"    
+    cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../models/diffusers")
+    # cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
     # cache_dir = "F:/huggingface_model/"  # Local cache path for diffusers
 
     def __init__(self,
