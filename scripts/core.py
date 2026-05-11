@@ -19,7 +19,10 @@ class ImageExtension():
                  sampleTimeStep: int = 30,
                  only_local_files: bool = False):
         self.base_model_name = self.DEFAULT_MODEL
-        self.only_local_files = only_local_files
+        
+        model_cache_dir = os.path.join(self.cache_dir, "models--sd2-community--stable-diffusion-2-inpainting")
+        self.only_local_files = os.path.exists(model_cache_dir) or only_local_files
+
         self.sampleTimeStep = sampleTimeStep
         self.load_model()
         self.getLatent_model()
